@@ -11,14 +11,14 @@ const contador = document.getElementById("contador");
 
 
 //Llamaremos a la funcion "agregarTarea cada vez que se haga click en el boton "Agregar"
-btnAgregar.addEventListener("click",agregarTarea)
+btnAgregar.addEventListener("click", agregarTarea)
 
-function agregarTarea(){
+function agregarTarea() {
 
     const nombreTarea = txtTarea.value.trim();
     const prioridadTarea = prioridad.value;
 
-    if(nombreTarea == "" || prioridadTarea == ""){
+    if (nombreTarea == "" || prioridadTarea == "") {
 
         Swal.fire({
             icon: "warning",
@@ -39,4 +39,60 @@ function agregarTarea(){
 
     mostrarTareas();
     limpiarFormulario();
+
+    Swal.fire({
+        icon: "success",
+        title: "Tarea agregada",
+        text: "La tarea se agregó correctamente.",
+        confirmButtonText: "Aceptar"
+    });
+
 }
+
+function mostrarTareas() {
+    listaTareas.innerHTML = "";
+
+    tareas.forEach(function (tarea, index) {
+        listaTareas.innerHTML += `
+        <article class="bg-light rounded-3 p-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">${tarea.nombre}</h5>
+                        <p class="mb-0 text-muted">Prioridad: ${tarea.prioridad}</p>
+                    </div>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarTarea(${index})">
+                            Eliminar
+                        </button>
+                    <div>
+
+                    </div>
+
+                   </article>
+        `;
+    });
+    actualizarContador();
+}
+
+function eliminarTarea(index){
+    tareas.splice(index,1);
+
+    mostrarTareas();
+
+    Swal.fire({
+        icon: "success",
+        title: "Tarea eliminada",
+        text: "La tarea se eliminó correctamente.",
+        confirmButtonText: "Aceptar"
+    });
+
+}
+
+function limpiarFormulario(){
+    txtTarea.value="";
+    prioridad.value="";
+    txtTarea.focus();
+}
+
+function actualizarContador() {
+    contador.textContent = `Tareas registradas: ${tareas.length}`;
+}
+
